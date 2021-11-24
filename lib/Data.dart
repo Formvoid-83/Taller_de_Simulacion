@@ -34,6 +34,8 @@ class Data {
     return mp[s]!;
   }
 
+ 
+
   bool exceed() {
     double sum = 0;
     double sum2 = 0;
@@ -62,5 +64,45 @@ class Data {
      }); 
 
     return res ; 
+  }
+  
+
+  double calc(List<String> ls ,int  index ){
+    double res = 0 ; 
+  
+    ls.forEach((element) { 
+      var grid= mp[element];
+
+    if(grid!.isNotEmpty){
+      grid[index].forEach((element) {
+        if(element != ''){
+          res += double.tryParse(element)!; 
+        }
+
+       });
+    }
+    });
+    return res ; 
+  }
+
+  double getAporte1 (){
+       
+      var values = ['a1','a','b','c', 'd'];
+          return calc(values , 4);  
+  }
+  double getInvertido1 (){
+    
+    var values = ['a1','a','b','c', 'd'];
+    return calc(values , 5); 
+  }
+  double getAporte2  (){
+     
+    var values = ['e','g','f'];
+    return calc(values , 4); 
+  }
+  double getInvertido2 (){
+    
+    var values = ['e','g','f'];
+    return calc(values , 5); 
   }
 }

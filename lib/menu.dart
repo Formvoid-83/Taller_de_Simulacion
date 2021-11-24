@@ -19,7 +19,6 @@ class Menu extends StatelessWidget {
             ElevatedButton(onPressed: (){}, child: Text('Costos')),
             ElevatedButton(onPressed: (){}, child: Text('Flujo')),
             ElevatedButton(onPressed: (){}, child: Text('Load factor')),
-            
           ],
         ),
       ),

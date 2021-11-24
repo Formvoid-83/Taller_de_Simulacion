@@ -21,7 +21,7 @@ class _TableViewState extends State<TableView> {
   final total2 = TextEditingController();
   
    List<List<String>> data =
-      List.generate(5, (index) => List.generate(20, (index) => ''));
+      List.generate(6, (index) => List.generate(20, (index) => ''));
       
   final List<String> titleColumn = [
     'Unidad',
@@ -30,7 +30,7 @@ class _TableViewState extends State<TableView> {
     'Aporte Propio',
     'Invertido'
   ];
-  final List<String> titleRow = List.generate(20, (i) => '');
+  final List<String> titleRow = List.generate(20, (i) =>'');
 
   setxy(int x, int y, String s) {
     data[x][y] = s;
@@ -96,20 +96,87 @@ class _TableViewState extends State<TableView> {
                     setxy(x, y, s);
                     
                     Provider.of<Data>(context, listen:false).addList(key, data);
-                    if(x == 1 || x ==2 ){
-                    if(data[1][y] != '' && data[2][y] != '' ){
+                    if(x == 2 || x ==3 ){
+                    if(data[2][y] != '' && data[3][y] != '' ){
                       
-                        data[3][y] = (double.parse(data[1][y]) * double.parse(data[2][y])).toStringAsFixed(2); 
+                        data[4][y] = (double.parse(data[2][y]) * double.parse(data[3][y])).toStringAsFixed(2); 
                         
                       }
                       }
                     
-                    total1.text = '${sumColumn(3)}';
+                    // total1.text = '${sumColumn(4)}';
                     
-                    total2.text = '${sumColumn(4)}';
+                    // total2.text = '${sumColumn(5)}';
                     setState(() {
                     });
                     print('$x ,$y');
+                  },
+                  // style: textStyle,
+                  maxLines: 2,
+                  textAlign: _textAlign,
+                ),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: 1.1,
+              color: _colorVerticalBorder,
+            ),
+          ],
+        ),
+        decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(color: _colorHorizontalBorder),
+              right: BorderSide(color: _colorHorizontalBorder),
+            ),
+            color: colorBg),
+      ),
+    );
+  }
+
+
+ Widget getRowCell(int x, context, key) {
+    final CellDimensions cellDimensions;
+    final String text;
+    final double? cellWidth;
+    final double? cellHeight;
+    final Color colorBg;
+    final Color _colorHorizontalBorder;
+    final Color _colorVerticalBorder;
+    final TextAlign _textAlign;
+    final EdgeInsets _padding;
+    final TextStyle? textStyle;
+
+    cellDimensions = CellDimensions.base;
+    colorBg = Colors.white;
+
+    cellWidth = cellDimensions.stickyLegendWidth;
+    cellHeight = cellDimensions.stickyLegendHeight;
+    _colorHorizontalBorder = Colors.amber;
+    _colorVerticalBorder = Colors.black38;
+    _textAlign = TextAlign.center;
+    _padding = EdgeInsets.zero;
+
+    return GestureDetector(
+      child: Container(
+        width: cellWidth,
+        height: cellHeight,
+        padding: _padding,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(horizontal: 2.0),
+                child: TextFormField(
+                  decoration: InputDecoration(border: InputBorder.none),
+                  initialValue: data[0][x],
+                  onChanged: (s) {
+                    setxy(0,x , s);
+                    
+                    Provider.of<Data>(context, listen:false).addList(key, data);
+                  
+                   
                   },
                   // style: textStyle,
                   maxLines: 2,
@@ -143,8 +210,14 @@ class _TableViewState extends State<TableView> {
     final String title = param[1] ;
     final list = Provider.of<Data>(context , listen: false).getList(key);
     Text info = Text('');
-    if(Provider.of<Data>(context, listen: false).getList(key).isNotEmpty)
+    if(Provider.of<Data>(context, listen: false).getList(key).isNotEmpty){
       data =  Provider.of<Data>(context, listen: false).getList(key); 
+    
+      }
+
+      total1.text = '${sumColumn(4)}';
+                    
+      total2.text = '${sumColumn(5)}';
     return Scaffold(
       appBar: AppBar(
           leading: Icon(Icons.menu),
@@ -159,11 +232,8 @@ class _TableViewState extends State<TableView> {
             titleColumn[i],
             textStyle: textTheme.button!.copyWith(fontSize: 15.0),
           ),
-          rowsTitleBuilder: (i) => TableCel.stickyColumn(
-            titleRow[i],
-            textStyle: textTheme.button!.copyWith(fontSize: 15.0),
-          ),
-          contentCellBuilder: (i, j) => getCell(i, j, context, key),
+          rowsTitleBuilder: (i) => getRowCell(i , context , key ),
+          contentCellBuilder: (i, j) => getCell(i+1, j, context, key),
           // TableCell.content(
           //   data[i][j],
           //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),

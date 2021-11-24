@@ -25,7 +25,6 @@ class _Grid2State extends State<Grid2> {
              ),
            )); 
     return Scaffold(
-
       body: GridView.count(crossAxisCount: 6,
         // gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         //         maxCrossAxisExtent:1080/6 ,

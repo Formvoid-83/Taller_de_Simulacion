@@ -21,7 +21,7 @@ class _TableViewState extends State<ObraEmprendedor> {
   final total2 = TextEditingController();
   
    List<List<String>> data =
-      [['Global'], ['1'] , ['0']];
+      [['Mano de obra\n del emprendedor'],['Global'], ['1'] , ['0'] , [''], [''] ];
       
   final List<String> titleColumn = [
     'Unidad',
@@ -38,7 +38,7 @@ class _TableViewState extends State<ObraEmprendedor> {
     return data;
   }
 
-  Widget getCell(int x, int y, context) {
+  Widget getCell(int x, int y, context , key ) {
     final CellDimensions cellDimensions;
     final String text;
     final double? cellWidth;
@@ -76,17 +76,10 @@ class _TableViewState extends State<ObraEmprendedor> {
                   initialValue: data[x][y],
                   onChanged: (s) {
                     setxy(x, y, s);
-                    
-                    // Provider.of<Data>(context, listen:false).addList(key, data);
-                    // if(x == 1 || x ==2 ){
-                    // if(data[1][y] != '' && data[2][y] != '' ){
-                      
-                    //     data[3][y] = (double.parse(data[1][y]) * double.parse(data[2][y])).toStringAsFixed(2); 
-                        
-                    //   }
-                    //   }
-                    
-                   
+                    total1.text = data[x][y];
+                    if(x ==3 )
+                      data[4][y] = s;  
+                    Provider.of<Data>(context, listen:false).addList(key, data);
                     setState(() {
                     });
                     print('$x ,$y');
@@ -117,15 +110,16 @@ class _TableViewState extends State<ObraEmprendedor> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    // final List<String>? param =
-    //     ModalRoute.of(context)!.settings.arguments as List<String>?;
-    // final String key = param![0];
-    // final String title = param[1] ;
-
+     final List<String>? param =
+         ModalRoute.of(context)!.settings.arguments as List<String>?;
+     final String key = param![0];
+     final String title = param[1] ;
+     if(Provider.of<Data>(context, listen: false).getList(key).isNotEmpty){
+      data =  Provider.of<Data>(context, listen: false).getList(key); 
+      data[3][0] = data[4][0]; 
+      }
     Text info = Text('');
-     
-     data[2][0] = Provider.of<Data>(context).getTotalAporte().toStringAsFixed(2); 
-     total1.text =  Provider.of<Data>(context).getTotalAporte().toStringAsFixed(2);
+      total1.text =  data[3][0];
     return Scaffold(
       appBar: AppBar(
           leading: Icon(Icons.menu),
@@ -142,11 +136,11 @@ class _TableViewState extends State<ObraEmprendedor> {
             textStyle: textTheme.button!.copyWith(fontSize: 15.0),
           ),
           rowsTitleBuilder: (i) => TableCel.stickyColumn(
-            titleRow[i],
+            data[0][i],
             cellDimensions: CellDimensions.uniform(width: 200, height: 200),
             textStyle: textTheme.button!.copyWith(fontSize: 15.0),
           ),
-          contentCellBuilder: (i, j) => getCell(i, j, context),
+          contentCellBuilder: (i, j) => getCell(i+1, j, context, key),
           // TableCell.content(
           //   data[i][j],
           //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),
