@@ -1,7 +1,9 @@
 
 import 'package:app/Data.dart';
 import 'package:app/calc.dart';
+import 'package:app/grid2.dart';
 import 'package:app/menu.dart';
+import 'package:app/obra_emprendedor.dart';
 import 'package:app/table.dart';
 import 'package:app/presEmp.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,10 @@ class MyApp extends StatelessWidget {
         'menu' : (context) =>  Menu(),
         'presEmp':(context) => PresEmp(),
         'Calc': (context) => Calc() ,
-        'Table': (context) => TableView()
+        'Table': (context) => TableView(), 
+        'Obra': (context) => ObraEmprendedor(), 
+        'ayuda': (context) => Grid2(), 
+        
       },
       initialRoute: 'menu',
       title: 'Flutter Demo',
@@ -132,3 +137,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+

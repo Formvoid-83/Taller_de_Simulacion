@@ -27,15 +27,20 @@ class Calc extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          
+          Text('Capital Operativo' , style:TextStyle(fontSize: 30 , fontWeight:FontWeight.w800 ,)),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text('Aporte propio') , Container( width:150 , child :TextFormField(controller: a,))],),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [ Text('Invertido') , Container( width:150, child :TextFormField(controller: b,))],),
+          ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'Obra',arguments: ['a1','Mano de Obra del Emprendedor']);}, child: Text('Mano de Obra de Emprendedor')),
           ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'Table',arguments: ['a','Materia Prima/Insumos']);}, child: Text('Materia Prima/Insumos')),
           ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'Table',arguments: ['b','Requerimientos Promocionales']);}, child: Text('Requerimientos Promocionales')),
           ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'Table',arguments: ['c','Gastos Operativos']);}, child: Text('Gastos Operativos')),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [ Text('Invertido') , Container( width:150 , child :TextFormField(controller: d,))],),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text('Aporte propio') , Container( width:150 , child :TextFormField(controller: c,))],),
           ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'Table',arguments: ['e','Infraestructura/Terrenos']);}, child: Text('Infraestructura/Terrenos')),
-          ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'Table',arguments: ['f','Maquinaria/Equipos']);}, child: Text('Maquinaria/Equipos')),
           ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'Table',arguments: ['g','Requerimientos Legales']);}, child: Text('Requerimientos Legales')),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [Text('Aporte propio') , Container( width:200 , child :TextFormField(controller: a,))],),
-          Row(mainAxisAlignment:  MainAxisAlignment.spaceAround, children: [Text('Total') , Container( width:200 , child :TextFormField(controller: b,))],)
+          ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'Table',arguments: ['f','Maquinaria/Equipos']);}, child: Text('Maquinaria/Equipos')),
+          // Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [Text('Aporte propio') , Container( width:200 , child :TextFormField(controller: a,))],),
+          // Row(mainAxisAlignment:  MainAxisAlignment.spaceAround, children: [Text('Total') , Container( width:200 , child :TextFormField(controller: b,))],)
         ],
       ),
     ));

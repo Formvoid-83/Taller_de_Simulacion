@@ -6,57 +6,39 @@ import 'package:provider/provider.dart';
 import 'package:app/asxs.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
 
-class TableView extends StatefulWidget {
-  TableView({Key? key}) : super(key: key);
+class ObraEmprendedor extends StatefulWidget {
+  ObraEmprendedor({Key? key}) : super(key: key);
 
   @override
   _TableViewState createState() => _TableViewState();
 }
 
-class _TableViewState extends State<TableView> {
+class _TableViewState extends State<ObraEmprendedor> {
 
-  final columns = 5;
-  final rows = 20;
+  final columns = 3;
+  final rows = 1;
   final total1 = TextEditingController();
   final total2 = TextEditingController();
   
    List<List<String>> data =
-      List.generate(5, (index) => List.generate(20, (index) => ''));
+      [['Global'], ['1'] , ['0']];
       
   final List<String> titleColumn = [
     'Unidad',
     'Cantidad',
-    'Precio',
     'Aporte Propio',
-    'Invertido'
   ];
-  final List<String> titleRow = List.generate(20, (i) => '');
+  final List<String> titleRow = ['Mano de obra\n del emprendedor '];
 
   setxy(int x, int y, String s) {
     data[x][y] = s;
-  }
-
-  double sumColumn(index ){
-    double res = 0 ; 
-    data[index].forEach((element) {
-      if(element != '')
-      res += double.tryParse(element)!; 
-       });  
-
-    return res ; 
-  }
-
-  void checkMul(x, y )
-  {
-    
-    
   }
 
   List<List<String>> getData() {
     return data;
   }
 
-  Widget getCell(int x, int y, context, key) {
+  Widget getCell(int x, int y, context) {
     final CellDimensions cellDimensions;
     final String text;
     final double? cellWidth;
@@ -80,8 +62,8 @@ class _TableViewState extends State<TableView> {
 
     return GestureDetector(
       child: Container(
-        width: cellWidth,
-        height: cellHeight,
+        width: 200,
+        height: 100,
         padding: _padding,
         child: Column(
           children: <Widget>[
@@ -95,18 +77,16 @@ class _TableViewState extends State<TableView> {
                   onChanged: (s) {
                     setxy(x, y, s);
                     
-                    Provider.of<Data>(context, listen:false).addList(key, data);
-                    if(x == 1 || x ==2 ){
-                    if(data[1][y] != '' && data[2][y] != '' ){
+                    // Provider.of<Data>(context, listen:false).addList(key, data);
+                    // if(x == 1 || x ==2 ){
+                    // if(data[1][y] != '' && data[2][y] != '' ){
                       
-                        data[3][y] = (double.parse(data[1][y]) * double.parse(data[2][y])).toStringAsFixed(2); 
+                    //     data[3][y] = (double.parse(data[1][y]) * double.parse(data[2][y])).toStringAsFixed(2); 
                         
-                      }
-                      }
+                    //   }
+                    //   }
                     
-                    total1.text = '${sumColumn(3)}';
-                    
-                    total2.text = '${sumColumn(4)}';
+                   
                     setState(() {
                     });
                     print('$x ,$y');
@@ -137,18 +117,19 @@ class _TableViewState extends State<TableView> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final List<String>? param =
-        ModalRoute.of(context)!.settings.arguments as List<String>?;
-    final String key = param![0];
-    final String title = param[1] ;
-    final list = Provider.of<Data>(context , listen: false).getList(key);
+    // final List<String>? param =
+    //     ModalRoute.of(context)!.settings.arguments as List<String>?;
+    // final String key = param![0];
+    // final String title = param[1] ;
+
     Text info = Text('');
-    if(Provider.of<Data>(context, listen: false).getList(key).isNotEmpty)
-      data =  Provider.of<Data>(context, listen: false).getList(key); 
+     
+     data[2][0] = Provider.of<Data>(context).getTotalAporte().toStringAsFixed(2); 
+     total1.text =  Provider.of<Data>(context).getTotalAporte().toStringAsFixed(2);
     return Scaffold(
       appBar: AppBar(
           leading: Icon(Icons.menu),
-          title: Text(title),
+          title: Text('Mano de obra emprendedor  '),
           actions: [Icon(Icons.more_vert)]),
       body: Column(children: [
         Expanded(
@@ -157,19 +138,22 @@ class _TableViewState extends State<TableView> {
           rowsLength: titleRow.length,
           columnsTitleBuilder: (i) => TableCel.stickyRow(
             titleColumn[i],
+            cellDimensions: CellDimensions.uniform(width: 200, height: 200),
             textStyle: textTheme.button!.copyWith(fontSize: 15.0),
           ),
           rowsTitleBuilder: (i) => TableCel.stickyColumn(
             titleRow[i],
+            cellDimensions: CellDimensions.uniform(width: 200, height: 200),
             textStyle: textTheme.button!.copyWith(fontSize: 15.0),
           ),
-          contentCellBuilder: (i, j) => getCell(i, j, context, key),
+          contentCellBuilder: (i, j) => getCell(i, j, context),
           // TableCell.content(
           //   data[i][j],
           //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),
           // ),
           legendCell: TableCel.legend(
             'Detalle',
+            cellDimensions: CellDimensions.uniform(width: 200, height: 200),
             textStyle: textTheme.button!.copyWith(fontSize: 16.5),
           ),
         )),
@@ -183,12 +167,7 @@ class _TableViewState extends State<TableView> {
                 controller: total1,
               ),
             ),
-            Container(
-              width: 100,
-              child: TextFormField(
-                controller: total2,
-              ),
-            )
+         
           ],
         )
       ]),
