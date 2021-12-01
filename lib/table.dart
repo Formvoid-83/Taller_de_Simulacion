@@ -99,7 +99,7 @@ class _TableViewState extends State<TableView> {
                     if(x == 2 || x ==3 ){
                     if(data[2][y] != '' && data[3][y] != '' ){
                       
-                        data[4][y] = (double.parse(data[2][y]) * double.parse(data[3][y])).toStringAsFixed(2); 
+                        data[5][y] = (double.parse(data[2][y]) * double.parse(data[3][y])).toStringAsFixed(2); 
                         
                       }
                       }

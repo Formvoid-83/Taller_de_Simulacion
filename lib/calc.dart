@@ -145,7 +145,7 @@ class _CalcState extends State<Calc> {
                 ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, 'Table',
-                              arguments: ['e', 'Infraestructura/Terrenos'])
+                              arguments: ['d', 'Infraestructura/Terrenos'])
                           .then((_) {
                         setState(() {});
                       });
@@ -154,7 +154,7 @@ class _CalcState extends State<Calc> {
                 ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, 'Table',
-                          arguments: ['g', 'Requerimientos Legales']).then((_) {
+                          arguments: ['e', 'Requerimientos Legales']).then((_) {
                         setState(() {});
                       });
                     },

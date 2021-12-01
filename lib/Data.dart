@@ -1,7 +1,7 @@
 class Data {
-  double total1, total2, acumulate;
+  double total1, total2, acumulate, APE, t1 ,t2;
   Map<String, List<List<String>>> mp = {};
-  Data(this.total1, this.total2, this.acumulate) {
+  Data(this.total1, this.total2, this.acumulate , this.APE , this.t1, this.t2) {
     mp = {
       'a1': [],
       'a': [],
@@ -12,6 +12,18 @@ class Data {
       'f': [],
       'g': [],
     };
+    
+  }
+
+   void sett1(x) {
+    t1 = x;
+  }
+   void sett2(x) {
+    t2 = x;
+  }
+
+  void setAPE(x) {
+    APE = x;
   }
 
   void setTotal1(x) {
@@ -26,6 +38,23 @@ class Data {
 
   double getTotal2() => total2;
 
+  double getAPE() => APE;
+
+  double getT1() => t1;
+  
+  double getT2() => t2;
+
+  double getEfec() {
+    double res = 0 ; 
+
+    if(mp['a1']!.isNotEmpty){
+      if(mp['a1']![4][0] != '')
+       res = double.parse( mp['a1']![4][0]);
+    }
+
+    return res; 
+  }
+
   void addList(key, List<List<String>> v) {
     mp[key] = v;
   }
@@ -34,7 +63,58 @@ class Data {
     return mp[s]!;
   }
 
- 
+ List<String> getAporteList()
+  { 
+    List<String >ls = [] ; 
+    // mp.forEach((key, value) {
+    //   double res = 0; 
+    //   value.forEach((element) {
+    //     if(element.length > 4)
+    //     res += double.tryParse(element[4])!;  
+    //    });
+    //   ls.add(res.toStringAsFixed(2)); 
+    //  });
+    mp.forEach((key, value) {
+      double res = 0 ; 
+      if(value.isNotEmpty )
+      value[4].forEach((element) {
+        if(element != ''){
+          res += double.tryParse(element)!; 
+        }
+      });
+      ls.add(res.toStringAsFixed(2)); 
+
+     }); 
+
+     return ls; 
+  }
+
+ List<String> getInvertidoList()
+  { 
+    List<String >ls = [] ; 
+    // mp.forEach((key, value) {
+    //   double res = 0; 
+    //   value[3].forEach((element) {
+    //     if(element.length>5 )
+    //     res += double.tryParse(element[5])!;  
+    //    });
+    //   ls.add(res.toStringAsFixed(2)); 
+    //  });
+
+    mp.forEach((key, value) {
+      double res = 0 ; 
+      if(value.isNotEmpty )
+      value[5].forEach((element) {
+        if(element != ''){
+          res += double.tryParse(element)!; 
+        }
+      });
+      ls.add(res.toStringAsFixed(2)); 
+
+     }); 
+      ls.removeAt(0);
+     return ls; 
+  }
 
   bool exceed() {
     double sum = 0;

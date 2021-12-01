@@ -1,9 +1,11 @@
 
 import 'package:app/Data.dart';
+import 'package:app/PresPTotalCont.dart';
 import 'package:app/calc.dart';
 import 'package:app/grid2.dart';
 import 'package:app/menu.dart';
 import 'package:app/obra_emprendedor.dart';
+import 'package:app/prespTotal.dart';
 import 'package:app/table.dart';
 import 'package:app/presEmp.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Provider(
-  create: (_) => Data(0,0,0),
+  create: (_) => Data(0,0,0, 0,0,0 ),
   child:
     MaterialApp(
       routes: <String,WidgetBuilder>{
@@ -30,7 +32,8 @@ class MyApp extends StatelessWidget {
         'Table': (context) => TableView(), 
         'Obra': (context) => ObraEmprendedor(), 
         'ayuda': (context) => Grid2(), 
-        
+        'PrespTotal': (context) => PrespsTotal(),
+        'PrespTotalCont': (context) => PrespsTotalCont(),
       },
       initialRoute: 'menu',
       title: 'Flutter Demo',
