@@ -104,13 +104,13 @@ class _PrespsTotalState extends State<PrespsTotal> {
                   initialValue: (b) ? data[x][y] : data2[x][y],
                   onChanged: (s) {
                     setxy(x, y, s);
-                    var aux = '${sumColumn()}';
+                    double aux = sumColumn();
+                    Provider.of<Data>(context , listen: false).setAPE(aux); 
                     setState(() {
+                    c.text = '$aux' ;
 
-                    c.text = aux ;
                     });
                     
-                    Provider.of<Data>(context).setAPE(aux); 
                     
                   },
                   // style: textStyle,
@@ -152,6 +152,7 @@ class _PrespsTotalState extends State<PrespsTotal> {
     final String title = param[1] ;
 
     data[0] = Provider.of<Data>(context , listen:false ).getAporteList(); 
+    data[0][0] = Provider.of<Data>(context , listen:false ).getTotal3().toStringAsFixed(2);
     data2[0] = Provider.of<Data>(context, listen:false).getInvertidoList(); 
     
     double sumAP = data[0].fold(0, (prev, e) => prev += double.parse(e));

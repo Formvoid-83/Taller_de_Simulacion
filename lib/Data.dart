@@ -1,16 +1,17 @@
 class Data {
-  double total1, total2, acumulate, APE, t1 ,t2;
+  double total1, total2, total3, APE, t1 ,t2;
   Map<String, List<List<String>>> mp = {};
-  Data(this.total1, this.total2, this.acumulate , this.APE , this.t1, this.t2) {
+  Data(this.total1, this.total2, this.total3 , this.APE , this.t1, this.t2) {
     mp = {
-      'a1': [],
-      'a': [],
-      'b': [],
-      'c': [],
-      'd': [],
-      'e': [],
-      'f': [],
-      'g': [],
+      'a1':  List.generate(6, (index) => List.generate(20, (index) => '')),
+      'a' :  List.generate(6, (index) => List.generate(20, (index) => '')),
+      'b' :  List.generate(6, (index) => List.generate(20, (index) => '')),
+      'c' :  List.generate(6, (index) => List.generate(20, (index) => '')),
+      'd' :  List.generate(6, (index) => List.generate(20, (index) => '')),
+      'e' :  List.generate(6, (index) => List.generate(20, (index) => '')),
+      'f' :  List.generate(6, (index) => List.generate(20, (index) => '')),
+      'g' :  List.generate(6, (index) => List.generate(20, (index) => '')),
+ 
     };
     
   }
@@ -34,6 +35,10 @@ class Data {
     total2 = x;
   }
 
+  void setTotal3(x) {
+    total3 = x;
+  }
+
   double getTotal1() => total1;
 
   double getTotal2() => total2;
@@ -43,16 +48,10 @@ class Data {
   double getT1() => t1;
   
   double getT2() => t2;
+  double getTotal3() => total3;
 
   double getEfec() {
-    double res = 0 ; 
-
-    if(mp['a1']!.isNotEmpty){
-      if(mp['a1']![4][0] != '')
-       res = double.parse( mp['a1']![4][0]);
-    }
-
-    return res; 
+    return total3; 
   }
 
   void addList(key, List<List<String>> v) {
@@ -167,22 +166,22 @@ class Data {
 
   double getAporte1 (){
        
-      var values = ['a1','a','b','c', 'd'];
+      var values = ['a1','a','b','c'];
           return calc(values , 4);  
   }
   double getInvertido1 (){
     
-    var values = ['a1','a','b','c', 'd'];
+    var values = ['a1','a','b','c'];
     return calc(values , 5); 
   }
   double getAporte2  (){
      
-    var values = ['e','g','f'];
+    var values = ['d','e','g'];
     return calc(values , 4); 
   }
   double getInvertido2 (){
     
-    var values = ['e','g','f'];
+    var values = ['d','e','g'];
     return calc(values , 5); 
   }
 }

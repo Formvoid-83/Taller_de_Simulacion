@@ -70,8 +70,11 @@ class PresEmp extends StatelessWidget {
   void contin(BuildContext context){
      Provider.of<Data>(context , listen: false).setTotal2(double.parse(d.text));
      Provider.of<Data>(context , listen: false).setTotal1(double.parse(a.text));
+     Provider.of<Data>(context , listen: false).setTotal3(double.parse(a.text) + double.parse(b.text) +double.parse(c.text));
+     
     print(Provider.of<Data>(context, listen: false).total1); 
     print(Provider.of<Data>(context, listen: false).total2); 
+
     Navigator.pushNamed(context,'Calc' );
   }
 
