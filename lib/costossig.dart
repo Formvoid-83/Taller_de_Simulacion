@@ -11,15 +11,22 @@ class CostosSig extends StatefulWidget {
 }
 
 class _CostosState extends State<CostosSig> {
-  
   final titleRow = [
-    'Enero', 'Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre', 'Noviembre', 'Diciembre', 'Anual'
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+    'Anual'
   ];
-  final titleColumn= [ 'Ventas\nMensuales' , 'Costos Produccion\nMensual'];
-  
-
- 
-
+  final titleColumn = ['Ventas\nMensuales', 'Costos Produccion\nMensual'];
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +35,8 @@ class _CostosState extends State<CostosSig> {
         ModalRoute.of(context)!.settings.arguments as List<String>?;
     final String key = param![0];
     final String title = param[1];
-        
-    String value = '-'; 
+
+    String value = '-';
 
     return Scaffold(
       appBar: AppBar(
@@ -37,90 +44,81 @@ class _CostosState extends State<CostosSig> {
           title: Text(title),
           actions: [Icon(Icons.more_vert)]),
       body: Column(
-
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children:[
-          Text('Rango de ventas en Bs.'),
-
-          Row( 
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Rango de ventas en Bs.'),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text('Alta  '),
-              Container(
-                width: 200,
-                child: TextFormField(
+              children: [
+                Text('Alta  '),
+                Container(
+                  width: 200,
+                  child: TextFormField(
                     keyboardType: TextInputType.number,
-                  
+                  ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text('Media'),
+                Container(
+                  width: 200,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                  ),
                 ),
-              )
-            ],
-
-          ),
-          Row(
-
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text('Media'),
-              Container(
-                width: 200,
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text('Baja  '),
+                Container(
+                  width: 200,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                  ),
+                )
+              ],
+            ),
+            Expanded(
+                child: StickyHeadersTable(
+              columnsLength: titleColumn.length,
+              rowsLength: titleRow.length,
+              columnsTitleBuilder: (i) => TableCel.stickyRow(
+                titleColumn[i],
+                cellDimensions:
+                    CellDimensions.uniform(width: 300, height: double.infinity),
+                textStyle: textTheme.button!.copyWith(fontSize: 15.0),
               ),
-            ],
-
-          ),
-          Row( 
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text('Baja  '),
-              Container(
-                width: 200,
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                ),
-              )
-            ],
-          ),
-         Expanded(
-           child: 
-            StickyHeadersTable(
-          columnsLength: titleColumn.length,
-          rowsLength: titleRow.length,
-          columnsTitleBuilder: (i) => TableCel.stickyRow(
-            titleColumn[i],
-              cellDimensions: CellDimensions.uniform(width: 300, height: double.infinity),
-            
-            textStyle: textTheme.button!.copyWith(fontSize: 15.0),
-          ),
-          rowsTitleBuilder: (i) => TableCel.stickyRow( titleRow[i],
-              cellDimensions: CellDimensions.uniform(width: 200, height: double.infinity),
-          
-          )  ,
-          contentCellBuilder: (i, j) =>
-          
-          (i == 0 )  ? TableCelWidget.content( Dropdown()) :TableCel.content('',
-          
-                        cellDimensions: CellDimensions.uniform(width: 300, height: double.infinity),
-
-          ),
-          // TableCell.content(
-          //   data[i][j],
-          //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),
-          // ),
-          legendCell: TableCel.legend(
-            'Mes',
-            textStyle: textTheme.button!.copyWith(fontSize: 16.5),
-          ),
-        )),             
-
-        ]
-      ),
+              rowsTitleBuilder: (i) => TableCel.stickyRow(
+                titleRow[i],
+                cellDimensions:
+                    CellDimensions.uniform(width: 200, height: double.infinity),
+              ),
+              contentCellBuilder: (i, j) => (i == 0)
+                  ? TableCelWidget.content(Dropdown())
+                  : TableCel.content(
+                      '',
+                      cellDimensions: CellDimensions.uniform(
+                          width: 300, height: double.infinity),
+                    ),
+              // TableCell.content(
+              //   data[i][j],
+              //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),
+              // ),
+              legendCell: TableCel.legend(
+                'Mes',
+                textStyle: textTheme.button!.copyWith(fontSize: 16.5),
+              ),
+            )),
+          ]),
     );
   }
 }
-
 
 class Dropdown extends StatefulWidget {
   Dropdown({Key? key}) : super(key: key);
@@ -130,18 +128,19 @@ class Dropdown extends StatefulWidget {
 }
 
 class _DropdownState extends State<Dropdown> {
-  String value= '-'; 
+  String value = '-';
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
-          items:
-          ['-','A','M','B'].map((e) => DropdownMenuItem(value: e,  child: Text(e)) ).toList() ,
-          onChanged: (String? newValue) {
-          setState(() {
-            value = newValue!;
-          });},
-          value: value,
-        
-         );
+      items: ['-', 'A', 'M', 'B']
+          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+          .toList(),
+      onChanged: (String? newValue) {
+        setState(() {
+          value = newValue!;
+        });
+      },
+      value: value,
+    );
   }
 }

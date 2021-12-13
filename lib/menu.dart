@@ -5,20 +5,43 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-    Scaffold(
-      body:  Container(
+    return Scaffold(
+      body: Container(
         padding: EdgeInsets.all(50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.asset('lib/logo.jpeg'),
-            ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'presEmp');}, child: Text('Presupuesto de emprendimiento')),
-            ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'PrespTotal',arguments: ['', 'Presupuesto total']);}, child: Text('Presupuesto total')),
-            ElevatedButton(onPressed: (){Navigator.pushNamed(context, 'costos',arguments: ['', 'Costos']);}, child: Text('Costos')),
-            ElevatedButton(onPressed: (){}, child: Text('Flujo')),
-            ElevatedButton(onPressed: (){}, child: Text('Load factor')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'presEmp');
+                },
+                child: Text('Presupuesto de emprendimiento')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'PrespTotal',
+                      arguments: ['', 'Presupuesto total']);
+                },
+                child: Text('Presupuesto total')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'costos',
+                      arguments: ['', 'Costos']);
+                },
+                child: Text('Costos')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'Flujos',
+                      arguments: ['', 'Flujos']);
+                },
+                child: Text('Flujos')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'LoadFactor',
+                      arguments: ['', 'Load Factor']);
+                },
+                child: Text('Load factor')),
           ],
         ),
       ),

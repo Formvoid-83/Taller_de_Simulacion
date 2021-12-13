@@ -1,9 +1,12 @@
-
 import 'package:app/Data.dart';
+import 'package:app/LoadFactor.dart';
 import 'package:app/PresPTotalCont.dart';
 import 'package:app/calc.dart';
 import 'package:app/costos.dart';
 import 'package:app/costossig.dart';
+import 'package:app/flujos.dart';
+import 'package:app/flujos2.dart';
+import 'package:app/flujos3.dart';
 import 'package:app/grid2.dart';
 import 'package:app/menu.dart';
 import 'package:app/obra_emprendedor.dart';
@@ -21,42 +24,46 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  Provider(
-  create: (_) => Data(0,0,0, 0,0,0 ),
-  child:
-    MaterialApp(
-      routes: <String,WidgetBuilder>{
-
-        '/' : (context) =>  MyHomePage(title: ''), 
-        'menu' : (context) =>  Menu(),
-        'presEmp':(context) => PresEmp(),
-        'Calc': (context) => Calc() ,
-        'costos': (context) => Costos() ,
-        'costossig': (context) => CostosSig() ,
-        'Table': (context) => TableView(), 
-        'Obra': (context) => ObraEmprendedor(), 
-        'ayuda': (context) => Grid2(), 
-        'PrespTotal': (context) => PrespsTotal(),
-        'PrespTotalCont': (context) => PrespsTotalCont(),
-      },
-      initialRoute: 'menu',
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        inputDecorationTheme: InputDecorationTheme(border: OutlineInputBorder(borderSide: BorderSide(style: BorderStyle.solid))  ),
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      // home: MyHomePage(title: 'Flutter Demo Home Page'),
-)
-    );
+    return ChangeNotifierProvider<Data>(
+        create: (context) => Data(
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Productiva', 112, 0, 'Variable'),
+        child: MaterialApp(
+          routes: <String, WidgetBuilder>{
+            '/': (context) => MyHomePage(title: ''),
+            'menu': (context) => Menu(),
+            'presEmp': (context) => PresEmp(),
+            'Calc': (context) => Calc(),
+            'costos': (context) => Costos(),
+            'costossig': (context) => CostosSig(),
+            'Table': (context) => TableView(),
+            'Obra': (context) => ObraEmprendedor(),
+            'ayuda': (context) => Grid2(),
+            'PrespTotal': (context) => PrespsTotal(),
+            'PrespTotalCont': (context) => PrespsTotalCont(),
+            'Flujos': (context) => Flujos(),
+            'FlujosNext': (context) => FlujosNext(),
+            'Flujos3': (context) => Flujos3(),
+            'LoadFactor': (context) => LoadFactor(),
+          },
+          initialRoute: 'menu',
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            inputDecorationTheme: InputDecorationTheme(
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(style: BorderStyle.solid))),
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            primarySwatch: Colors.blue,
+          ),
+          // home: MyHomePage(title: 'Flutter Demo Home Page'),
+        ));
   }
 }
 
@@ -144,4 +151,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
