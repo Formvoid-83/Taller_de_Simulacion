@@ -13,7 +13,14 @@ class Data with ChangeNotifier {
       TG,
       avion,
       ruta,
-      frecuencia;
+      frecuencia,
+      MF,
+      TVentas,
+      TCostos,
+      poliza,
+      cuotaAprox,
+      capacidadPago,
+      solvencia;
   String actividad, cuota;
   Map<String, List<List<String>>> mp = {};
   Data(
@@ -31,7 +38,14 @@ class Data with ChangeNotifier {
       this.actividad,
       this.avion,
       this.ruta,
-      this.cuota) {
+      this.cuota,
+      this.MF,
+      this.TVentas,
+      this.TCostos,
+      this.poliza,
+      this.cuotaAprox,
+      this.capacidadPago,
+      this.solvencia) {
     mp = {
       'a1': List.generate(6, (index) => List.generate(20, (index) => '')),
       'a': List.generate(6, (index) => List.generate(20, (index) => '')),
@@ -44,12 +58,29 @@ class Data with ChangeNotifier {
     };
   }
 
+  void setTVentas(double x) {
+    TVentas = x;
+  }
+
+  void setTCostos(double x) {
+    TCostos = x;
+  }
+
+  void setpoliza(x) {
+    poliza = x;
+  }
+
+  void setcuotaAprox(x) {
+    cuotaAprox = x;
+  }
+
   void sett1(x) {
     t1 = x;
   }
 
   void sett2(x) {
     t2 = x;
+    setMF();
   }
 
   void setTotalVentas(x) {
@@ -70,6 +101,7 @@ class Data with ChangeNotifier {
 
   void setTotal3(x) {
     total3 = x;
+    setMF();
   }
 
   void setMUB(x) {
@@ -109,6 +141,28 @@ class Data with ChangeNotifier {
     cuota = f;
     notifyListeners();
   }
+
+  void setMF() {
+    MF = t2 - total3;
+  }
+  
+  void setCapacidadPago(double x) {
+    capacidadPago = x ; 
+  }
+  void setSolvencia(double x) {
+    solvencia = x ; 
+  }
+
+
+  double getSolvencia() => solvencia;
+  double getCapacidadPago() => capacidadPago;
+
+  double getTVentas() => TVentas;
+  double getTCostos() => TCostos;
+  double getpoliza() => poliza;
+  double getCuotaAprox() => cuotaAprox;
+
+  double getMF() => MF;
 
   String getCuota() => cuota;
 

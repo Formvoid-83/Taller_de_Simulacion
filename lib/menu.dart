@@ -42,6 +42,12 @@ class Menu extends StatelessWidget {
                       arguments: ['', 'Load Factor']);
                 },
                 child: Text('Load factor')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'Resultados',
+                      arguments: ['', 'Resultados']);
+                },
+                child: Text('Indicadores Finales')),
           ],
         ),
       ),

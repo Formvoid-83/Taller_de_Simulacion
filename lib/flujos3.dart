@@ -17,6 +17,7 @@ class _FlujosState extends State<Flujos3> {
   final b = TextEditingController(text: '');
   final c = TextEditingController(text: '');
   final d = TextEditingController(text: '');
+  final e = TextEditingController(text: '');
   double valor = 0.0,
       frecuencia = 0,
       poliza = 0,
@@ -27,6 +28,8 @@ class _FlujosState extends State<Flujos3> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
+    final double MF = Provider.of<Data>(context, listen: false).getMF();
+    e.text = MF.toStringAsFixed(2);
     return Scaffold(
       appBar: AppBar(
           leading: Icon(Icons.menu),
@@ -87,7 +90,7 @@ class _FlujosState extends State<Flujos3> {
                 ),
                 Text("Datos de credito"),
                 Container(
-                  height: 200,
+                  height: 300,
                   child: GridView.count(
                     childAspectRatio: 8 / 2,
                     crossAxisCount: 2,
@@ -97,7 +100,7 @@ class _FlujosState extends State<Flujos3> {
                     children: <Widget>[
                       Text('Monto'),
                       TextFormField(
-                        initialValue: "MF",
+                        controller: e,
                         readOnly: true,
                       ),
                       Text('Actividad'),
@@ -125,6 +128,7 @@ class _FlujosState extends State<Flujos3> {
                         c.text = '$amortizacion';
                       else
                         c.text = '';
+
                       /*
                     	1>(360/FRECUENCIA) * (1/2)
 				Y
@@ -269,7 +273,7 @@ class _DropdownStateC extends State<DropdownC> {
         Provider.of<Data>(context, listen: false).setCuota(newValue!);
 
         setState(() {
-          value = newValue!;
+          value = newValue;
         });
       },
       value: value,

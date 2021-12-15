@@ -4,52 +4,60 @@ import 'package:provider/provider.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
 
 class TableCel extends StatelessWidget {
-  TableCel.content(
-    this.text, {
-    this.textStyle,
-    this.cellDimensions = CellDimensions.base,
-    this.colorBg = Colors.white,
-    this.onTap,
-  })  : cellWidth = cellDimensions.contentCellWidth,
+  TableCel.content(this.text,
+      {this.textStyle,
+      this.cellDimensions = CellDimensions.base,
+      this.colorBg = Colors.white,
+      this.onTap,
+      this.onchange,
+      this.readonly,
+      this.controller})
+      : cellWidth = cellDimensions.contentCellWidth,
         cellHeight = cellDimensions.contentCellHeight,
         _colorHorizontalBorder = Colors.amber,
         _colorVerticalBorder = Colors.black38,
         _textAlign = TextAlign.center,
         _padding = EdgeInsets.zero;
 
-  TableCel.legend(
-    this.text, {
-    this.textStyle,
-    this.cellDimensions = CellDimensions.base,
-    this.colorBg = Colors.amber,
-    this.onTap,
-  })  : cellWidth = cellDimensions.stickyLegendWidth,
+  TableCel.legend(this.text,
+      {this.textStyle,
+      this.cellDimensions = CellDimensions.base,
+      this.colorBg = Colors.amber,
+      this.onTap,
+      this.onchange,
+      this.readonly,
+      this.controller})
+      : cellWidth = cellDimensions.stickyLegendWidth,
         cellHeight = cellDimensions.stickyLegendHeight,
         _colorHorizontalBorder = Colors.white,
         _colorVerticalBorder = Colors.amber,
         _textAlign = TextAlign.start,
         _padding = EdgeInsets.only(left: 24.0);
 
-  TableCel.stickyRow(
-    this.text, {
-    this.textStyle,
-    this.cellDimensions = CellDimensions.base,
-    this.colorBg = Colors.amber,
-    this.onTap,
-  })  : cellWidth = cellDimensions.contentCellWidth,
+  TableCel.stickyRow(this.text,
+      {this.textStyle,
+      this.cellDimensions = CellDimensions.base,
+      this.colorBg = Colors.amber,
+      this.onTap,
+      this.onchange,
+      this.readonly,
+      this.controller})
+      : cellWidth = cellDimensions.contentCellWidth,
         cellHeight = cellDimensions.stickyLegendHeight,
         _colorHorizontalBorder = Colors.white,
         _colorVerticalBorder = Colors.amber,
         _textAlign = TextAlign.center,
         _padding = EdgeInsets.zero;
 
-  TableCel.stickyColumn(
-    this.text, {
-    this.textStyle,
-    this.cellDimensions = CellDimensions.base,
-    this.colorBg = Colors.white,
-    this.onTap,
-  })  : cellWidth = cellDimensions.stickyLegendWidth,
+  TableCel.stickyColumn(this.text,
+      {this.textStyle,
+      this.cellDimensions = CellDimensions.base,
+      this.colorBg = Colors.white,
+      this.onTap,
+      this.onchange,
+      this.readonly,
+      this.controller})
+      : cellWidth = cellDimensions.stickyLegendWidth,
         cellHeight = cellDimensions.contentCellHeight,
         _colorHorizontalBorder = Colors.amber,
         _colorVerticalBorder = Colors.black38,
@@ -60,7 +68,7 @@ class TableCel extends StatelessWidget {
 
   final String text;
   final Function()? onTap;
-  
+  final TextEditingController? controller;
   final double? cellWidth;
   final double? cellHeight;
 
@@ -70,9 +78,9 @@ class TableCel extends StatelessWidget {
 
   final TextAlign _textAlign;
   final EdgeInsets _padding;
-
+  final bool? readonly;
   final TextStyle? textStyle;
-
+  final Function(String)? onchange;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -84,18 +92,20 @@ class TableCel extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 2.0),
-                child: TextFormField(
-                  decoration: InputDecoration(border: InputBorder.none),
-                  initialValue:text,
-                  style: textStyle,
-                  maxLines: 2,
-                  textAlign: _textAlign,
-                ),
+                child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(horizontal: 2.0),
+              child: TextFormField(
+                decoration: InputDecoration(border: InputBorder.none),
+                readOnly: readonly ?? false,
+                initialValue: (controller == null) ? text : null,
+                style: textStyle,
+                maxLines: 2,
+                textAlign: _textAlign,
+                onChanged: onchange,
+                controller: controller,
               ),
-            ),
+            )),
             Container(
               width: double.infinity,
               height: 1.1,
@@ -113,7 +123,6 @@ class TableCel extends StatelessWidget {
     );
   }
 }
-
 
 class TableCelWidget extends StatelessWidget {
   TableCelWidget.content(
@@ -172,7 +181,7 @@ class TableCelWidget extends StatelessWidget {
 
   final Widget child;
   final Function()? onTap;
-  
+
   final double? cellWidth;
   final double? cellHeight;
 
@@ -182,7 +191,7 @@ class TableCelWidget extends StatelessWidget {
 
   final TextAlign _textAlign;
   final EdgeInsets _padding;
-
+  // final TextEditingController?
   final TextStyle? textStyle;
 
   @override
@@ -197,12 +206,10 @@ class TableCelWidget extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 2.0),
-                child: child
-                ),
-              ),
-          
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 2.0),
+                  child: child),
+            ),
             Container(
               width: double.infinity,
               height: 1.1,

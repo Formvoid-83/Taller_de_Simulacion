@@ -1,6 +1,7 @@
 import 'package:app/Data.dart';
 import 'package:app/LoadFactor.dart';
 import 'package:app/PresPTotalCont.dart';
+import 'package:app/ayudadiosito.dart';
 import 'package:app/calc.dart';
 import 'package:app/costos.dart';
 import 'package:app/costossig.dart';
@@ -16,6 +17,9 @@ import 'package:app/presEmp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Resultados.dart';
+import 'Resultados2.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -25,8 +29,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<Data>(
-        create: (context) => Data(
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Productiva', 112, 0, 'Variable'),
+        create: (context) => Data(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Productiva',
+            112, 0, 'Variable', 0, 0, 0, 0, 0, 0,0),
         child: MaterialApp(
           routes: <String, WidgetBuilder>{
             '/': (context) => MyHomePage(title: ''),
@@ -34,7 +38,7 @@ class MyApp extends StatelessWidget {
             'presEmp': (context) => PresEmp(),
             'Calc': (context) => Calc(),
             'costos': (context) => Costos(),
-            'costossig': (context) => CostosSig(),
+            'ayudaDiosito': (context) => AyudaDiosito(),
             'Table': (context) => TableView(),
             'Obra': (context) => ObraEmprendedor(),
             'ayuda': (context) => Grid2(),
@@ -44,6 +48,8 @@ class MyApp extends StatelessWidget {
             'FlujosNext': (context) => FlujosNext(),
             'Flujos3': (context) => Flujos3(),
             'LoadFactor': (context) => LoadFactor(),
+            'Resultados': (context) => Resultados(),
+            'Resultados2': (context) => Resultados2(),
           },
           initialRoute: 'menu',
           title: 'Flutter Demo',

@@ -1,19 +1,20 @@
+import 'package:app/asxs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
 
 import 'Data.dart';
-import 'asxs.dart';
 
-class CostosSig extends StatefulWidget {
-  CostosSig({Key? key}) : super(key: key);
+class AyudaDiosito extends StatefulWidget {
+  AyudaDiosito({Key? key}) : super(key: key);
 
   @override
-  _CostosState createState() => _CostosState();
+  _AyudaDiositoState createState() => _AyudaDiositoState();
 }
 
-class _CostosState extends State<CostosSig> {
-  final titleRow = [
+class _AyudaDiositoState extends State<AyudaDiosito> {
+   final titleRow = [
     'Enero',
     'Febrero',
     'Marzo',
@@ -30,21 +31,22 @@ class _CostosState extends State<CostosSig> {
   ];
   final titleColumn = ['Ventas\nMensuales', 'Costos Produccion\nMensual'];
 
-  @override
+  
+  
+   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     
-   
-    TextEditingController A = TextEditingController(),
+     TextEditingController A = TextEditingController(),
         M = TextEditingController(),
         B = TextEditingController();
     
-
+    
     return Scaffold(
+
       appBar: AppBar(
-          leading: Icon(Icons.menu),
-          title: Text('Costos'),
-          actions: [Icon(Icons.more_vert)]),
+            leading: Icon(Icons.menu),
+            title: Text('Costos '),
+            actions: [Icon(Icons.more_vert)]),
       body: ChangeNotifierProvider<Values>(
         create: (context) => Values( Provider.of<Data>(context , listen:false ).getMUB()),
         child: Consumer<Values>(
@@ -52,8 +54,9 @@ class _CostosState extends State<CostosSig> {
             // print(values.valuesD);
             // print(values.valuesI);
             // print(values.MUB); 
-            //Provider.of<Data>(context,listen: false).setTVentas((double.tryParse( values.valuesD[12])??0));
-            //Provider.of<Data>(context,listen: false).setTCostos((double.tryParse( values.valuesI[12] ) ?? 0));
+            
+            Provider.of<Data>(context,listen: false).setTVentas( values.getsumD());
+            Provider.of<Data>(context,listen: false).setTCostos( values.getsumI());
             return Container(
               height: MediaQuery.of(context).size.height*2,
               child: Column(
@@ -112,17 +115,14 @@ class _CostosState extends State<CostosSig> {
                         )
                       ],
                     ),
-                    Expanded(
-                        child: 
-                                        
-                        StickyHeadersTable(
+                    Expanded(child:          StickyHeadersTable(
                       columnsLength: titleColumn.length,
                       rowsLength: titleRow.length,
                       columnsTitleBuilder: (i) => TableCel.stickyRow(
                         titleColumn[i],
                         cellDimensions: CellDimensions.uniform(
                             width: 300, height: double.infinity),
-                        textStyle: textTheme.button!.copyWith(fontSize: 15.0),
+                        // textStyle: textTheme.button!.copyWith(fontSize: 15.0),
                       ),
                       rowsTitleBuilder: (i) => TableCel.stickyRow(
                         titleRow[i],
@@ -131,7 +131,7 @@ class _CostosState extends State<CostosSig> {
                       ),
                       contentCellBuilder: (i, j){
                         if(i == 0  && j != 12)
-                          return TableCelWidget.content(Dropdown(i, j));
+                          return TableCelWidget.content(DropdownP(i, j));
                           else if( j == 12 )
                           return TableCelWidget.content(Text((i==0 ) ? values.getXYstrD(i  , j) :values.getXYstrI(i, j)));
                           else
@@ -143,29 +143,29 @@ class _CostosState extends State<CostosSig> {
                       // ),
                       legendCell: TableCel.legend(
                         'Mes',
-                        textStyle: textTheme.button!.copyWith(fontSize: 16.5),
+                        // textStyle: textTheme.button!.copyWith(fontSize: 16.5),
                       ),
-                    )
+                     ),)
+                      
                     
-                    ),
-                  ]),
-            );
-          },
-        ),
-      ),
+                    
+                     
+                    ])
+                    );}
+                    ))
     );
   }
 }
 
-class Dropdown extends StatefulWidget {
-  Dropdown(this.x, this.y , {Key? key}) : super(key: key);
+class DropdownP extends StatefulWidget {
+  DropdownP(this.x, this.y , {Key? key}) : super(key: key);
   final int x;
   final int y;
   @override
   _DropdownState createState() => _DropdownState();
 }
 
-class _DropdownState extends State<Dropdown> {
+class _DropdownState extends State<DropdownP> {
   String value = '-';
 
   @override
@@ -187,10 +187,13 @@ class _DropdownState extends State<Dropdown> {
   }
 }
 
+
+
 class Values with ChangeNotifier {
   final valuesD = List.filled(13 ,'');
   final valuesI = List.filled(13,''); 
   final double MUB ; 
+   double sumD =0 , sumI = 0; 
 
   Map<String, double> mp = {'A': 0, 'M': 0, 'B': 0};
   Values(this.MUB);
@@ -222,9 +225,10 @@ class Values with ChangeNotifier {
 
     valuesI[y] = (mp[val]! * (1-MUB)).toStringAsFixed(4); 
 
-   valuesD[12] = sum(0).toStringAsFixed(4);
-    valuesI[12] = sum(1).toStringAsFixed(4);
-  
+    sumD = sum(0); 
+    sumI = sum(1); 
+   valuesD[12] = sumD.toStringAsFixed(4);
+    valuesI[12] = sumI.toStringAsFixed(4);
     notifyListeners();
   }
 
@@ -241,4 +245,7 @@ class Values with ChangeNotifier {
   double getAlta() => mp['A']!;
   double getMedia() => mp['M']!;
   double getBaja() => mp['B']!;
+
+  double getsumD() => sumD; 
+  double getsumI() => sumI; 
 }

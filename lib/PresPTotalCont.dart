@@ -89,7 +89,7 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
                 child: TextFormField(
                   decoration: InputDecoration(border: InputBorder.none),
                   initialValue: data2[x][y],
-                    keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.number,
                   onChanged: (s) {
                     setxy(x, y, s);
 
@@ -129,7 +129,7 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
     final t2 = Provider.of<Data>(context, listen: false).getT2();
     final ape = Provider.of<Data>(context, listen: false).getAPE();
     final efec = Provider.of<Data>(context, listen: false).getEfec();
-    print('ape:$ape  efec:$efec t1:$t1  t2:$t2   '); 
+    print('ape:$ape  efec:$efec t1:$t1  t2:$t2   ');
     titleColumn[0] = (t1 + t2 - efec).toStringAsFixed(2);
     data[0][0] = t1.toStringAsFixed(2);
     if (t1 + t2 - efec != 0)
@@ -137,7 +137,7 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
     else
       data[0][1] = (0).toStringAsFixed(2);
     titleColumn2[0] = 'Bs. ${(t2 - efec).toStringAsFixed(2)}';
-
+    //  Provider.of<Data>(context, listen: false).setMF(t2 - efec);
     return Scaffold(
       appBar: AppBar(
           leading: Icon(Icons.menu),
@@ -190,12 +190,14 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
                   rowsLength: 0,
                   columnsTitleBuilder: (i) => TableCel.stickyRow(
                     titleColumn2[i],
+                    readonly: true,
                     textStyle: textTheme.button!.copyWith(fontSize: 15.0),
                     cellDimensions: CellDimensions.uniform(
                         width: 300, height: double.infinity),
                   ),
                   rowsTitleBuilder: (i) => TableCel.stickyRow(
                     titleRow[i],
+                    readonly: true,
                     textStyle: textTheme.button!.copyWith(fontSize: 15.0),
                     cellDimensions: CellDimensions.uniform(
                         width: 200, height: double.infinity),
@@ -244,7 +246,8 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
                     ),
               ),
               Container(
-                child: Text('DESEMBOLSO\n ${ ( double.tryParse(data2[0][0]) != null && double.tryParse(data2[0][1])!= null  &&   double.parse(data2[0][0]) + double.parse(data2[0][1]) == t2 - efec ) ? "CORRECTO":"INCORRECTO"} '),
+                child: Text(
+                    'DESEMBOLSO\n ${(double.tryParse(data2[0][0]) != null && double.tryParse(data2[0][1]) != null && double.parse(data2[0][0]) + double.parse(data2[0][1]) == t2 - efec) ? "CORRECTO" : "INCORRECTO"} '),
               ),
               SizedBox(
                 height: 15,
