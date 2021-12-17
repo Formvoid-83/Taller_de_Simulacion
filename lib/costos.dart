@@ -32,10 +32,41 @@ class _CostosState extends State<Costos> {
       s2 = TextEditingController(),
       s3 = TextEditingController();
 
+  final scroll = ScrollControllers(
+    horizontalBodyController: ScrollController(),
+    verticalBodyController: ScrollController(),
+    horizontalTitleController: ScrollController(),
+    verticalTitleController: ScrollController(),
+  );
+
+  double _scrollOffsetX = 0.0;
+  double _scrollOffsetY = 0.0;
+  double _scrollOffsetX2 = 0.0;
+  double _scrollOffsetY2 = 0.0;
+
   @override
-     Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
+    final scroll = ScrollControllers(
+      horizontalBodyController:
+          ScrollController(initialScrollOffset: _scrollOffsetX),
+      verticalBodyController:
+          ScrollController(initialScrollOffset: _scrollOffsetY),
+      horizontalTitleController:
+          ScrollController(initialScrollOffset: _scrollOffsetX),
+      verticalTitleController:
+          ScrollController(initialScrollOffset: _scrollOffsetY),
+    );
+    final scroll2 = ScrollControllers(
+      horizontalBodyController:
+          ScrollController(initialScrollOffset: _scrollOffsetX2),
+      verticalBodyController:
+          ScrollController(initialScrollOffset: _scrollOffsetY2),
+      horizontalTitleController:
+          ScrollController(initialScrollOffset: _scrollOffsetX2),
+      verticalTitleController:
+          ScrollController(initialScrollOffset: _scrollOffsetY2),
+    );
     final textTheme = Theme.of(context).textTheme;
-   
     return Scaffold(
         appBar: AppBar(
             leading: Icon(Icons.menu),
@@ -48,11 +79,20 @@ class _CostosState extends State<Costos> {
             s1.text = tablecontent.getSum1();
             s2.text = tablecontent.getSum2();
             s3.text = tablecontent.getSum3();
-            Provider.of<Data>(context, listen: false).setMUB(double.tryParse( s3.text) ?? 0);
+            Provider.of<Data>(context, listen: false)
+                .setMUB(double.tryParse(s3.text) ?? 0);
             return Column(children: [
               Expanded(
                   flex: 1,
                   child: StickyHeadersTable(
+                    scrollControllers: scroll,
+
+                    initialScrollOffsetX: _scrollOffsetX,
+                    initialScrollOffsetY: _scrollOffsetY,
+                    onEndScrolling: (scrollOffsetX, scrollOffsetY) {
+                      _scrollOffsetX = scrollOffsetX;
+                      _scrollOffsetY = scrollOffsetY;
+                    },
                     columnsLength: titleColumn.length,
                     rowsLength: titleRow.length,
                     columnsTitleBuilder: (i) => TableCel.stickyRow(
@@ -104,6 +144,14 @@ class _CostosState extends State<Costos> {
                       //     builder: (context, tablecontent, widget) {
                       //   return
                       StickyHeadersTable(
+                    scrollControllers: scroll2,
+
+                    initialScrollOffsetX: _scrollOffsetX2,
+                    initialScrollOffsetY: _scrollOffsetY2,
+                    onEndScrolling: (scrollOffsetX, scrollOffsetY) {
+                      _scrollOffsetX2 = scrollOffsetX;
+                      _scrollOffsetY2 = scrollOffsetY;
+                    },
                     columnsLength: titleColumn.length,
                     rowsLength: titleRow.length,
                     columnsTitleBuilder: (i) => TableCel.stickyRow(
@@ -170,7 +218,7 @@ class _CostosState extends State<Costos> {
                     child: TextFormField(
                       controller: s3,
                       readOnly: true,
-                    ),           
+                    ),
                   ),
                 ],
               ),
@@ -179,8 +227,7 @@ class _CostosState extends State<Costos> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, 'ayudaDiosito'
-                      );
+                    Navigator.pushNamed(context, 'ayudaDiosito');
                   },
                   child: Text('Siguente'))
             ]);

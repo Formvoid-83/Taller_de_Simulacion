@@ -118,8 +118,35 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
     );
   }
 
+  final scroll = ScrollControllers(
+    horizontalBodyController: ScrollController(),
+    verticalBodyController: ScrollController(),
+    horizontalTitleController: ScrollController(),
+    verticalTitleController: ScrollController(),
+  );
+
+  final scroll2 = ScrollControllers(
+    horizontalBodyController: ScrollController(),
+    verticalBodyController: ScrollController(),
+    horizontalTitleController: ScrollController(),
+    verticalTitleController: ScrollController(),
+  );
+
+  final scroll3 = ScrollControllers(
+    horizontalBodyController: ScrollController(),
+    verticalBodyController: ScrollController(),
+    horizontalTitleController: ScrollController(),
+    verticalTitleController: ScrollController(),
+  );
+
   @override
   Widget build(BuildContext context) {
+    double _scrollOffsetX = 0.0;
+    double _scrollOffsetY = 0.0;
+    double _scrollOffsetX2 = 0.0;
+    double _scrollOffsetY2 = 0.0;
+    double _scrollOffsetX3 = 0.0;
+    double _scrollOffsetY3 = 0.0;
     final textTheme = Theme.of(context).textTheme;
     final List<String>? param =
         ModalRoute.of(context)!.settings.arguments as List<String>?;
@@ -137,7 +164,12 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
     else
       data[0][1] = (0).toStringAsFixed(2);
     titleColumn2[0] = 'Bs. ${(t2 - efec).toStringAsFixed(2)}';
-    //  Provider.of<Data>(context, listen: false).setMF(t2 - efec);
+    double aux = Provider.of<Data>(context, listen: false).getDesembolso1();
+    double aux2 = Provider.of<Data>(context, listen: false).getDesembolso2();
+
+    data2[0][0] = (aux == 0) ? '' : aux.toStringAsFixed(2);
+    data2[0][1] = (aux2 == 0) ? '' : aux2.toStringAsFixed(2);
+
     return Scaffold(
       appBar: AppBar(
           leading: Icon(Icons.menu),
@@ -153,6 +185,14 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
               Container(
                 height: 200,
                 child: StickyHeadersTable(
+                  scrollControllers: scroll,
+
+                  // initialScrollOffsetX: _scrollOffsetX,
+                  // initialScrollOffsetY: _scrollOffsetY,
+                  // onEndScrolling: (scrollOffsetX, scrollOffsetY) {
+                  //   _scrollOffsetX = scrollOffsetX;
+                  //   _scrollOffsetY = scrollOffsetY;
+                  // },
                   columnsLength: titleColumn.length,
                   rowsLength: titleRow.length,
                   columnsTitleBuilder: (i) => TableCel.stickyRow(
@@ -186,6 +226,14 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
               Container(
                 height: 100,
                 child: StickyHeadersTable(
+                  scrollControllers: scroll2,
+
+                  // initialScrollOffsetX: _scrollOffsetX2,
+                  // initialScrollOffsetY: _scrollOffsetY2,
+                  // onEndScrolling: (scrollOffsetX, scrollOffsetY) {
+                  //   _scrollOffsetX2 = scrollOffsetX;
+                  //   _scrollOffsetY2 = scrollOffsetY;
+                  // },
                   columnsLength: titleColumn2.length,
                   rowsLength: 0,
                   columnsTitleBuilder: (i) => TableCel.stickyRow(
@@ -217,6 +265,14 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
               Container(
                 height: 200,
                 child: StickyHeadersTable(
+                    scrollControllers: scroll3,
+
+                    // initialScrollOffsetX: _scrollOffsetX3,
+                    // initialScrollOffsetY: _scrollOffsetY3,
+                    // onEndScrolling: (scrollOffsetX, scrollOffsetY) {
+                    //   _scrollOffsetX3 = scrollOffsetX;
+                    //   _scrollOffsetY3 = scrollOffsetY;
+                    // },
                     columnsLength: titleColumn3.length,
                     rowsLength: titleRow2.length,
                     columnsTitleBuilder: (i) => Container(),
@@ -233,7 +289,16 @@ class _PrespsTotalState extends State<PrespsTotalCont> {
                               width: 200, height: double.infinity),
                         ),
                     contentCellBuilder: (i, j) =>
-                        getCell(i, j, context, key, true),
+                        TableCelWidget.content(TextFormField(
+                          initialValue: data2[i][j],
+                          onChanged: (s) {
+                            data2[i][j] = s;
+                            Provider.of<Data>(context, listen: false)
+                                .setDesembolso((double.tryParse(s) ?? 0), j);
+                          },
+                        )),
+
+                    // getCell(i, j, context, key, true),
                     // TableCell.content(
                     //   data[i][j],
                     //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),

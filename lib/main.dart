@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<Data>(
-        create: (context) => Data(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Productiva',
-            112, 0, 'Variable', 0, 0, 0, 0, 0, 0,0),
+        create: (context) => Data(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Productiva',
+            112, 0, 'Variable', 0, 0, 0, 0, 0, 0, 0,0,0 ),
         child: MaterialApp(
           routes: <String, WidgetBuilder>{
             '/': (context) => MyHomePage(title: ''),

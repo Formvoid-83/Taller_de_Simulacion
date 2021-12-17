@@ -45,6 +45,15 @@ class _FlujosState extends State<Flujos> {
       sum.text = res.toStringAsFixed(2);
     });
   }
+    double _scrollOffsetX = 0.0;
+    double _scrollOffsetY = 0.0;
+    final scroll = ScrollControllers(
+      horizontalBodyController: ScrollController(), 
+      verticalBodyController:  ScrollController(), 
+      horizontalTitleController: ScrollController(), 
+      verticalTitleController: ScrollController(), 
+      
+      );
 
   final sum = TextEditingController(text: '0.00');
   @override
@@ -66,6 +75,13 @@ class _FlujosState extends State<Flujos> {
             Expanded(
               flex: 1,
               child: StickyHeadersTable(
+                scrollControllers: scroll ,
+                // initialScrollOffsetX: _scrollOffsetX,
+                // initialScrollOffsetY: _scrollOffsetY,
+                // onEndScrolling: (scrollOffsetX, scrollOffsetY) {
+                //   _scrollOffsetX = scrollOffsetX;
+                //   _scrollOffsetY = scrollOffsetY;
+                // },
                 columnsLength: titleColumn.length,
                 rowsLength: titleRow.length,
                 columnsTitleBuilder: (i) => TableCel.stickyRow(

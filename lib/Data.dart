@@ -13,14 +13,19 @@ class Data with ChangeNotifier {
       TG,
       avion,
       ruta,
-      frecuencia,
+      frecuencia = 30,
       MF,
       TVentas,
       TCostos,
       poliza,
       cuotaAprox,
       capacidadPago,
-      solvencia;
+      solvencia,
+      otros,
+      cajaDeAhorro,
+      desembolso1 = 0,
+      desembolso2 = 0,
+      ingresosTotales = 0;
   String actividad, cuota;
   Map<String, List<List<String>>> mp = {};
   Data(
@@ -34,7 +39,6 @@ class Data with ChangeNotifier {
       this.MUB,
       this.costos,
       this.totalVentas,
-      this.frecuencia,
       this.actividad,
       this.avion,
       this.ruta,
@@ -45,7 +49,9 @@ class Data with ChangeNotifier {
       this.poliza,
       this.cuotaAprox,
       this.capacidadPago,
-      this.solvencia) {
+      this.solvencia,
+      this.otros,
+      this.cajaDeAhorro) {
     mp = {
       'a1': List.generate(6, (index) => List.generate(20, (index) => '')),
       'a': List.generate(6, (index) => List.generate(20, (index) => '')),
@@ -116,6 +122,18 @@ class Data with ChangeNotifier {
     TG = x;
   }
 
+  void setIngresosTotales(x) {
+    ingresosTotales = x;
+  }
+
+  double getIngresosTotales() => ingresosTotales;
+  void setDesembolso(double val, int i) {
+    if (i == 0)
+      desembolso1 = val;
+    else
+      desembolso2 = val;
+  }
+
   void setFrecuencia(double f) {
     frecuencia = f;
     notifyListeners();
@@ -145,15 +163,17 @@ class Data with ChangeNotifier {
   void setMF() {
     MF = t2 - total3;
   }
-  
+
   void setCapacidadPago(double x) {
-    capacidadPago = x ; 
+    capacidadPago = x;
   }
+
   void setSolvencia(double x) {
-    solvencia = x ; 
+    solvencia = x;
   }
 
-
+  double getDesembolso1() => desembolso1;
+  double getDesembolso2() => desembolso2;
   double getSolvencia() => solvencia;
   double getCapacidadPago() => capacidadPago;
 
@@ -166,7 +186,7 @@ class Data with ChangeNotifier {
 
   String getCuota() => cuota;
 
-  double getFrecuencia() => frecuencia;
+  double getFrecuencia() => frecuencia = 30;
 
   String getActividad() => actividad;
 
@@ -311,12 +331,24 @@ class Data with ChangeNotifier {
   }
 
   double getAporte2() {
-    var values = ['d', 'e', 'g'];
+    var values = ['d', 'e', 'f', 'g'];
     return calc(values, 4);
   }
 
   double getInvertido2() {
-    var values = ['d', 'e', 'g'];
+    var values = ['d', 'e', 'f', 'g'];
     return calc(values, 5);
   }
+
+  void setOtros(double parse) {
+    otros = parse;
+  }
+
+  void setCajadeAhorro(double parse) {
+    cajaDeAhorro = parse;
+  }
+
+  double getOtros() => otros;
+
+  double getCajadeAhorro() => cajaDeAhorro;
 }

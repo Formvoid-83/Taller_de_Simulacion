@@ -18,18 +18,20 @@ class _FlujosState extends State<Flujos3> {
   final c = TextEditingController(text: '');
   final d = TextEditingController(text: '');
   final e = TextEditingController(text: '');
-  double valor = 0.0,
+  final p = TextEditingController(text: '');
+  double tasaInteres = 0.0,
       frecuencia = 0,
       poliza = 0,
       plazo = 0,
-      monto = 0,
-      amortizacion = 0;
+      amortizacion = 0,
+      periodo = 0;
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    final double MF = Provider.of<Data>(context, listen: false).getMF();
-    e.text = MF.toStringAsFixed(2);
+    final double monto = Provider.of<Data>(context, listen: false).getMF();
+
+    e.text = monto.toStringAsFixed(2);
     return Scaffold(
       appBar: AppBar(
           leading: Icon(Icons.menu),
@@ -54,9 +56,29 @@ class _FlujosState extends State<Flujos3> {
                     Container(
                         width: 150,
                         child: TextFormField(
+                          decoration:
+                              InputDecoration(hintText: "Ingrese valores "),
                           controller: a,
                           onChanged: (s) {
-                            poliza = double.tryParse(s)!;
+                            poliza = double.tryParse(s) ?? 0;
+                            Provider.of<Data>(context, listen: false)
+                                .setpoliza(poliza);
+                          },
+                        )),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text('Periodo de gracia      '),
+                    Container(
+                        width: 150,
+                        child: TextFormField(
+                          decoration:
+                              InputDecoration(hintText: "Ingrese valores "),
+                          controller: p,
+                          onChanged: (s) {
+                            periodo = double.tryParse(s) ?? 1;
                           },
                         )),
                   ],
@@ -77,9 +99,9 @@ class _FlujosState extends State<Flujos3> {
 
                             if (data.getActividad() == 'Productiva') {
                               d.text = '0.07';
-                              valor = 0.07;
+                              tasaInteres = 0.07;
                             } else {
-                              valor = 0.115;
+                              tasaInteres = 0.115;
 
                               d.text = '0.115';
                             }
@@ -108,7 +130,28 @@ class _FlujosState extends State<Flujos3> {
                       Text('Tipo de Cuota'),
                       DropdownC(),
                       Text('Plazo Meses'),
-                      TextFormField(controller: b, onChanged: (s) {}),
+                      TextFormField(
+                          decoration:
+                              InputDecoration(hintText: "Ingese valores "),
+                          controller: b,
+                          onChanged: (s) {
+                            double plazo = double.tryParse(s) ?? 0;
+
+                            if (plazo > 84) {
+                              b.text = '';
+                              final snackBar = SnackBar(
+                                content: const Text(
+                                    'El plazo máximo es de 84 meses'),
+                                action: SnackBarAction(
+                                  label: 'Entendido',
+                                  onPressed: () {},
+                                ),
+                              );
+
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
+                          }),
                     ],
                   ),
                 ),
@@ -117,30 +160,37 @@ class _FlujosState extends State<Flujos3> {
                   children: [
                     Text('CUOTA APROXIMADA         '),
                     Consumer<Data>(builder: (context, data, widget) {
-                      if (1 > 360 / data.getFrecuencia() * 0.5 &&
-                          (360 / data.getFrecuencia()) * (plazo * 0.5) >= 1) {
+                      if ((1 > 360 / data.getFrecuencia() * ((periodo) / 12)) &&
+                          (360 / data.getFrecuencia()) * (plazo / 12) >= 1) {
                         amortizacion = monto /
-                            ((360 / frecuencia) * ((plazo / 12) - 1 / 2));
+                            ((360 / data.getFrecuencia()) *
+                                ((plazo / 12) - periodo / 2));
                       } else {
                         amortizacion = 0;
                       }
+
+                      double interes =
+                          tasaInteres * monto / (360 / data.getFrecuencia());
+                      double cuota = amortizacion + interes;
                       if (data.getCuota() == 'Variable')
-                        c.text = '$amortizacion';
+                        c.text = cuota.toStringAsFixed(2);
                       else
-                        c.text = '';
-
-                      /*
-                    	1>(360/FRECUENCIA) * (1/2)
-				Y
-		(360/FRECUENCIA)*(PLAZO/12) >= 1
-	ENTONCES
-		MONTO/((360/FRECUENCIA)*((PLAZO/12)-1/2))
-	ELSE
-		0*/
-
+                        c.text = 'Ingrese datos';
+                      print([
+                        data.getFrecuencia(),
+                        periodo,
+                        plazo,
+                        tasaInteres,
+                        amortizacion,
+                        interes,
+                        cuota,
+                        monto
+                      ]);
                       return Container(
                         width: 200,
                         child: TextFormField(
+                          // decoration:  (va) ? InputDecoration(hintText: "Ingese valores "):null ,
+
                           controller: c,
                         ),
                       );
@@ -152,9 +202,25 @@ class _FlujosState extends State<Flujos3> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, 'Flujos4');
+                    //   if ((1 > 360 / data.getFrecuencia() * ((periodo) / 12)) &&
+                    //       (360 / data.getFrecuencia()) * (plazo / 12) >= 1) {
+                    //     amortizacion = monto /
+                    //         ((360 / data.getFrecuencia()) *
+                    //             ((plazo / 12) - periodo / 2));
+                    //   } else {
+                    //     amortizacion = 0;
+                    //   }
+
+                    //   double interes = tasaInteres * monto / (360 / frecuencia);
+                    //   double cuota = amortizacion + interes;
+                    //   if (data.getCuota() == 'Variable')
+                    //     c.text = cuota.toStringAsFixed(2);
+                    //   else
+                    //     c.text = 'Ingrese datos';
+
+                    setState(() {});
                   },
-                  child: Text('Siguente'),
+                  child: Text('Calcular'),
                 )
               ]),
         ),

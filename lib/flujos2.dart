@@ -12,8 +12,8 @@ class FlujosNext extends StatefulWidget {
 }
 
 class _FlujosState extends State<FlujosNext> {
-  final controlers =
-      List.generate(8, (i) => TextEditingController(text: '0.00'));
+  final controlers = List.generate(
+      8, (i) => TextEditingController(text: (i == 3) ? '' : '0.00'));
 
   void onChange(String d, int i) {
     double res = 0;
@@ -31,25 +31,28 @@ class _FlujosState extends State<FlujosNext> {
     final textTheme = Theme.of(context).textTheme;
 
     final TG = Provider.of<Data>(context, listen: false).getTG();
-    final totalv = Provider.of<Data>(context, listen: false).getTotalVentas();
-    final costos = Provider.of<Data>(context, listen: false).getCostos();
+    final totalv = Provider.of<Data>(context, listen: false).getTVentas();
+    final costos = Provider.of<Data>(context, listen: false).getTCostos();
     final MUB = Provider.of<Data>(context, listen: false).getMUB();
 
     controlers[0].text = totalv.toStringAsFixed(2);
     controlers[1].text = costos.toStringAsFixed(2);
     controlers[2].text = MUB.toStringAsFixed(2);
     controlers[6].text = (TG * 12).toStringAsFixed(2);
-    try {
-      controlers[5].text =
-          (double.parse(controlers[3].text) - double.parse(controlers[4].text))
-              .toStringAsFixed(2);
-      controlers[7].text =
-          (double.parse(controlers[6].text) - double.parse(controlers[5].text))
-              .toStringAsFixed(2);
-    } catch (e) {
-      controlers[5].text = "0.00";
-      controlers[7].text = "0.00";
-    }
+
+    controlers[5].text = ((double.tryParse(controlers[3].text) ?? 0) -
+            (double.tryParse(controlers[4].text) ?? 0))
+        .toStringAsFixed(2);
+
+    double aux = Provider.of<Data>(context, listen: false).getIngresosTotales();
+    controlers[3].text = (aux == 0) ? '' : aux.toStringAsFixed(2);
+    controlers[5].text = ((double.tryParse(controlers[3].text) ?? 0) -
+            (double.tryParse(controlers[1].text) ?? 0))
+        .toStringAsFixed(2);
+
+    controlers[7].text = ((double.tryParse(controlers[5].text) ?? 0) -
+            (double.tryParse(controlers[6].text) ?? 0))
+        .toStringAsFixed(2);
     return Scaffold(
         appBar: AppBar(
             leading: Icon(Icons.menu),
@@ -110,20 +113,21 @@ class _FlujosState extends State<FlujosNext> {
                       child: Text('(+) Ingresos Totales '),
                     ),
                     TextFormField(
+                      decoration: InputDecoration(hintText: "Ingese valores "),
                       controller: controlers[3],
                       onChanged: (s) {
-                        setState(() {
-                          try {
-                            controlers[5].text =
-                                (double.parse(controlers[3].text) -
-                                        double.parse(controlers[4].text))
-                                    .toStringAsFixed(2);
-                            controlers[7].text =
-                                (double.parse(controlers[6].text) -
-                                        double.parse(controlers[5].text))
-                                    .toStringAsFixed(2);
-                          } catch (e) {}
-                        });
+                        Provider.of<Data>(context, listen: false)
+                            .setIngresosTotales((double.tryParse(s) ?? 0));
+                        controlers[5].text =
+                            ((double.tryParse(controlers[3].text) ?? 0) -
+                                    (double.tryParse(controlers[1].text) ?? 0))
+                                .toStringAsFixed(2);
+
+                        controlers[7].text =
+                            ((double.tryParse(controlers[5].text) ?? 0) -
+                                    ((double.tryParse(controlers[6].text) ??
+                                        0)))
+                                .toStringAsFixed(2);
                       },
                     ),
                     Center(

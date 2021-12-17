@@ -12,36 +12,30 @@ class PrespsTotal extends StatefulWidget {
 }
 
 class _PrespsTotalState extends State<PrespsTotal> {
-  
-  
   final c = TextEditingController();
-  
-    List<List<String>> data =
+
+  List<List<String>> data =
       List.generate(1, (index) => List.generate(1, (index) => ''));
-      
-      
-    List<List<String>> data2 =
+
+  List<List<String>> data2 =
       List.generate(6, (index) => List.generate(6, (index) => ''));
 
-  setxy(x, y, s )
-  {
-    data2[x][y]  = s; 
-    
-  }   
-
-
-  double sumColumn()
-  {
-    double res = 0 ;
-    res = data2[1].fold(0, (prev, e) => (e == '')? prev : prev+= double.tryParse(e)!);  
-    return res ; 
+  setxy(x, y, s) {
+    data2[x][y] = s;
   }
+
+  double sumColumn() {
+    double res = 0;
+    res = data2[1]
+        .fold(0, (prev, e) => (e == '') ? prev : prev += double.tryParse(e)!);
+    return res;
+  }
+
   final List<String> titleColumn = [
     'MONTO TOTAL',
-  
   ];
 
-    final List<String> titleColumn2 = [
+  final List<String> titleColumn2 = [
     'MONTO TOTAL',
     'AP. PROPIO\n EFECTIVO',
   ];
@@ -53,7 +47,6 @@ class _PrespsTotalState extends State<PrespsTotal> {
     'Infraestructura/terrenos\n y/o plantines',
     'Maquinaria Equipos\n Vehículos',
     'Requerimientos\n Legales ',
-
   ];
 
   final List<String> titleRow2 = [
@@ -65,8 +58,7 @@ class _PrespsTotalState extends State<PrespsTotal> {
     'Requerimientos\n Legales ',
   ];
 
-
-  Widget getCell(int x, int y, context, key , b) {
+  Widget getCell(int x, int y, context, key, b) {
     final CellDimensions cellDimensions;
     final String text;
     final double? cellWidth;
@@ -105,13 +97,10 @@ class _PrespsTotalState extends State<PrespsTotal> {
                   onChanged: (s) {
                     setxy(x, y, s);
                     double aux = sumColumn();
-                    Provider.of<Data>(context , listen: false).setAPE(aux); 
+                    Provider.of<Data>(context, listen: false).setAPE(aux);
                     setState(() {
-                    c.text = '$aux' ;
-
+                      c.text = '$aux';
                     });
-                    
-                    
                   },
                   // style: textStyle,
                   maxLines: 2,
@@ -136,139 +125,159 @@ class _PrespsTotalState extends State<PrespsTotal> {
     );
   }
 
-
-
-
-
+  final scroll = ScrollControllers(
+    horizontalBodyController: ScrollController(),
+    verticalBodyController: ScrollController(),
+    horizontalTitleController: ScrollController(),
+    verticalTitleController: ScrollController(),
+  );
+  final scroll2 = ScrollControllers(
+    horizontalBodyController: ScrollController(),
+    verticalBodyController: ScrollController(),
+    horizontalTitleController: ScrollController(),
+    verticalTitleController: ScrollController(),
+  );
 
   @override
   Widget build(BuildContext context) {
-
+    double _scrollOffsetX = 0.0;
+    double _scrollOffsetY = 0.0;
+    double _scrollOffsetX2 = 0.0;
+    double _scrollOffsetY2 = 0.0;
     final textTheme = Theme.of(context).textTheme;
 
     final List<String>? param =
         ModalRoute.of(context)!.settings.arguments as List<String>?;
     final String key = param![0];
-    final String title = param[1] ;
+    final String title = param[1];
 
-    data[0] = Provider.of<Data>(context , listen:false ).getAporteList(); 
-    data[0][0] = Provider.of<Data>(context , listen:false ).getTotal3().toStringAsFixed(2);
-    data2[0] = Provider.of<Data>(context, listen:false).getInvertidoList(); 
-    
+    data[0] = Provider.of<Data>(context, listen: false).getAporteList();
+    data[0][0] = Provider.of<Data>(context, listen: false)
+        .getTotal3()
+        .toStringAsFixed(2);
+    data2[0] = Provider.of<Data>(context, listen: false).getInvertidoList();
+
     double sumAP = data[0].fold(0, (prev, e) => prev += double.parse(e));
     double sumINV = data2[0].fold(0, (prev, e) => prev += double.parse(e));
-    
-    Provider.of<Data>(context, listen: false).sett1(sumAP); 
-    Provider.of<Data>(context, listen: false).sett2(sumINV); 
-    return
-    Scaffold(
 
-       appBar: AppBar(
+    Provider.of<Data>(context, listen: false).sett1(sumAP);
+    Provider.of<Data>(context, listen: false).sett2(sumINV);
+    return Scaffold(
+      appBar: AppBar(
           leading: Icon(Icons.menu),
           title: Text(title),
           actions: [Icon(Icons.more_vert)]),
-      body:  SingleChildScrollView(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text('Presupuesto resumen '), 
+            Text('Presupuesto resumen '),
             Container(
-              height: 400,
-              width:double.infinity, 
-                   child: StickyHeadersTable(
-            columnsLength: titleColumn.length,
-            rowsLength: titleRow.length,
-            columnsTitleBuilder: (i) => TableCel.stickyRow(
-              titleColumn[i],
-              textStyle: textTheme.button!.copyWith(fontSize: 15.0),
-              cellDimensions: CellDimensions.uniform(width: 300, height: double.infinity),
-              
-              ),
-            rowsTitleBuilder: (i) => TableCel.stickyRow(
-              titleRow[i],
-              textStyle: textTheme.button!.copyWith(fontSize: 15.0),
-              cellDimensions: CellDimensions.uniform(width: 200, height: double.infinity),
-             ),
-            contentCellBuilder: (i, j) => getCell(i, j, context, key, true ),
-            // TableCell.content(
-            //   data[i][j],
-            //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),
-            // ),
-            legendCell: TableCel.legend(
-              'APORTE PROPIO',
-              textStyle: textTheme.button!.copyWith(fontSize: 16.5),
-            ),
-          )
-            ), 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children:[
+                height: 400,
+                width: double.infinity,
+                child: StickyHeadersTable(
+                  scrollControllers: scroll,
+
+                  // initialScrollOffsetX: _scrollOffsetX,
+                  // initialScrollOffsetY: _scrollOffsetY,
+                  // onEndScrolling: (scrollOffsetX, scrollOffsetY) {
+                  //   _scrollOffsetX = scrollOffsetX;
+                  //   _scrollOffsetY = scrollOffsetY;
+                  // },
+                  columnsLength: titleColumn.length,
+                  rowsLength: titleRow.length,
+                  columnsTitleBuilder: (i) => TableCel.stickyRow(
+                    titleColumn[i],
+                    textStyle: textTheme.button!.copyWith(fontSize: 15.0),
+                    cellDimensions: CellDimensions.uniform(
+                        width: 300, height: double.infinity),
+                  ),
+                  rowsTitleBuilder: (i) => TableCel.stickyRow(
+                    titleRow[i],
+                    textStyle: textTheme.button!.copyWith(fontSize: 15.0),
+                    cellDimensions: CellDimensions.uniform(
+                        width: 200, height: double.infinity),
+                  ),
+                  contentCellBuilder: (i, j) =>
+                      getCell(i, j, context, key, true),
+                  // TableCell.content(
+                  //   data[i][j],
+                  //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),
+                  // ),
+                  legendCell: TableCel.legend(
+                    'APORTE PROPIO',
+                    textStyle: textTheme.button!.copyWith(fontSize: 16.5),
+                  ),
+                )),
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               Text('Total'),
-               Container(
-                 width: 100, 
-                 child: TextFormField(
-                  //  controller: a ,
+              Container(
+                  width: 100,
+                  child: TextFormField(
+                    //  controller: a ,
                     enabled: false,
                     initialValue: sumAP.toStringAsFixed(2),
-                 )
-               ),             
-              ]
-            ), 
-            Text('Plan de inversion '), 
+                  )),
+            ]),
+            Text('Plan de inversion '),
             Container(
               height: 400,
               width: double.infinity,
-                   child: StickyHeadersTable(
-            columnsLength: titleColumn2.length,
-            rowsLength: titleRow2.length,
-            columnsTitleBuilder: (i) => TableCel.stickyRow(
-              titleColumn2[i],
-              textStyle: textTheme.button!.copyWith(fontSize: 15.0),
+              child: StickyHeadersTable(
+                scrollControllers: scroll2,
+
+                // initialScrollOffsetX: _scrollOffsetX2,
+                // initialScrollOffsetY: _scrollOffsetY2,
+                // onEndScrolling: (scrollOffsetX, scrollOffsetY) {
+                //   _scrollOffsetX2 = scrollOffsetX;
+                //   _scrollOffsetY2 = scrollOffsetY;
+                // },
+                columnsLength: titleColumn2.length,
+                rowsLength: titleRow2.length,
+                columnsTitleBuilder: (i) => TableCel.stickyRow(
+                  titleColumn2[i],
+                  textStyle: textTheme.button!.copyWith(fontSize: 15.0),
+                ),
+                rowsTitleBuilder: (i) => TableCel.stickyRow(
+                  titleRow2[i],
+                  textStyle: textTheme.button!.copyWith(fontSize: 15.0),
+                  cellDimensions: CellDimensions.uniform(
+                      width: 200, height: double.infinity),
+                ),
+                contentCellBuilder: (i, j) =>
+                    getCell(i, j, context, key, false),
+                // TableCell.content(
+                //   data[i][j],
+                //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),
+                // ),
+                legendCell: TableCel.legend(
+                  'APORTE PROPIO',
+                  textStyle: textTheme.button!.copyWith(fontSize: 16.5),
+                ),
+              ),
             ),
-            rowsTitleBuilder: (i) => TableCel.stickyRow(
-              titleRow2[i],
-              textStyle: textTheme.button!.copyWith(fontSize: 15.0),
-              cellDimensions: CellDimensions.uniform(width: 200, height: double.infinity),
-                
-             ),
-            contentCellBuilder: (i, j) => getCell(i, j, context, key, false ),
-            // TableCell.content(
-            //   data[i][j],
-            //   textStyle: textTheme.bodyText2!.copyWith(fontSize: 15.0),
-            // ),
-            legendCell: TableCel.legend(
-              'APORTE PROPIO',
-              textStyle: textTheme.button!.copyWith(fontSize: 16.5),
-            ),
-          ),
-            ), 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children:[
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               Text('Total'),
               Container(
-                width: 100, 
-                child: TextFormField(
-                  // controller: b ,
-                  initialValue: sumINV.toStringAsFixed(2),
-                )
-              ),              
+                  width: 100,
+                  child: TextFormField(
+                    // controller: b ,
+                    initialValue: sumINV.toStringAsFixed(2),
+                  )),
               Container(
-                width: 100, 
-                child: TextFormField(
-                  controller: c ,
-
-                )
-              ),
-              ]
-            ), 
-            
-            ElevatedButton(onPressed: ()
-            {
-              Navigator.pushNamed(context, 'PrespTotalCont', arguments: ['', 'Presupuesto total']); 
-            }, child: Text('Continuar')),
+                  width: 100,
+                  child: TextFormField(
+                    controller: c,
+                  )),
+            ]),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'PrespTotalCont',
+                      arguments: ['', 'Presupuesto total']);
+                },
+                child: Text('Continuar')),
           ],
         ),
       ),
